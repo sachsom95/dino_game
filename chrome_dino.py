@@ -5,7 +5,8 @@ WIN_WIDTH = 1000
 WIN_HEIGHT = 500
 pygame.init()
 pygame.display.set_caption("Dino")
-screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
+screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT),pygame.FULLSCREEN)
+# screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
 dinoRun = [(pygame.image.load("assets/dinorun0000.png")) , (pygame.image.load("assets/dinorun0001.png")),(pygame.image.load("assets/dinoJump0000.png")) ]
 
 
@@ -24,13 +25,15 @@ class dino:
     def move(self):
         self.clk += 1
         displacement = self.vel * self.clk + .5 * 3 * self.clk**2
-
+        if displacement > 300:
+            displacement = 300
         self.y = displacement
-
+        print(self.y)
     def jump(self):
         self.vel = -10.5
         self.clk = 0
         self.height = self.y
+        print("space pressed")
 
     def draw (self , screen):
         self.img_count +=1
@@ -60,6 +63,7 @@ def main(screen):
                     obj.jump()
 
         obj.draw(screen)
+        obj.move()
         pygame.display.update()
 
 
