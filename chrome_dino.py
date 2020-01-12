@@ -17,11 +17,53 @@ class dino:
         self.y = y
         self.clk = 0
         self.acc = 9.8
+        self.vel = 0
+        self.img_count = 0
+        self.height = self.y
 
     def move(self):
         self.clk += 1
+        displacement = self.vel * self.clk + .5 * 3 * self.clk**2
+
+        self.y = displacement
 
     def jump(self):
+        self.vel = -10.5
+        self.clk = 0
+        self.height = self.y
+
+    def draw (self , screen):
+        self.img_count +=1
+        if self.img_count <= 2:
+            self.dino_img = self.img[0]
+        elif self.img_count <= 4:
+            self.dino_img =self.img[1]
+            self.img_count = 0
+        screen.blit(self.dino_img,(self.x,self.y))
+
+
+def main(screen):
+    obj = dino(100,300)
+    running = True
+    clk = 0
+    while running:
+        clk += 1
+        screen.fill((255, 255, 255))
+
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    obj.jump()
+
+        obj.draw(screen)
+        pygame.display.update()
+
+
+main(screen)
 
 
 
@@ -31,30 +73,10 @@ class dino:
 
 
 
+#
+# def dino(x,y,i):
+#     print(i)
+#
+#     screen.blit(dinoRun[i],(100,300))
 
 
-
-
-
-
-
-
-def dino(x,y,i):
-    print(i)
-
-    screen.blit(dinoRun[i],(100,300))
-
-running = True
-clk=0
-while running:
-    clk +=1
-    screen.fill((255,255,255))
-
-    dino(1,1,clk%2)
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-
-    pygame.display.update()
