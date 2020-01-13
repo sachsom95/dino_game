@@ -7,7 +7,7 @@ pygame.display.set_caption("Dino")
 screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT),pygame.FULLSCREEN)
 # screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
 dinoRun = [(pygame.image.load("assets/dinorun0000.png")) , (pygame.image.load("assets/dinorun0001.png")),(pygame.image.load("assets/dinoJump0000.png")) ]
-
+ground_img = pygame.image.load("assets/Ground.png")
 
 class dino:
     '''The class for t-rex'''
@@ -52,10 +52,27 @@ class dino:
 
         screen.blit(self.dino_img,(self.x,self.y))
 
+class ground:
+    def __init__(self,y):
+        self.y = y
+        self.img = ground_img
+        self.x = 0
+    def draw(self,offset,screen):
+        self.x += 3
+        if self.x > 533:
+            self.x = 0
+        x_coordinate = self.x - offset
+        screen.blit(self.img,(-x_coordinate,self.y))
+
+
+
+
+
 
 def main(screen):
 
     obj = dino(100,300)
+    obj_ground = ground(400)
     running = True
     clk = 0
     while running:
@@ -75,6 +92,10 @@ def main(screen):
                     sys.exit()
 
         obj.draw(screen)
+        obj_ground.draw(0,screen)
+        obj_ground.draw(533,screen)
+        obj_ground.draw(1066,screen)
+        obj_ground.draw(1066+533, screen)
         obj.move()
         pygame.display.update()
 
