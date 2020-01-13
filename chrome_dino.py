@@ -1,7 +1,6 @@
 import pygame
-
-
-WIN_WIDTH = 1000
+import sys
+WIN_WIDTH = 1200
 WIN_HEIGHT = 500
 pygame.init()
 pygame.display.set_caption("Dino")
@@ -24,7 +23,7 @@ class dino:
 
     def move(self):
         self.clk += 1
-        displacement = self.vel * self.clk + .5 * 3 * self.clk**2
+        displacement = -self.vel * self.clk + ((1.5) * self.clk**2)
         if displacement > 300:
             displacement = 300
         self.y = displacement
@@ -36,16 +35,26 @@ class dino:
         print("space pressed")
 
     def draw (self , screen):
+        clock = pygame.time.Clock()
+        clock.tick(60)
         self.img_count +=1
-        if self.img_count <= 2:
+        if self.y < 300:
+            self.dino_img = self.img[2]
+            screen.blit(self.dino_img,(self.x,self.y))
+            # problem i had when i didnt set counter to 0 was it kept runing the jump image as counter went beyond 4
+            self.img_count = 0
+        if self.img_count <= 2 and self.y == 300:
             self.dino_img = self.img[0]
-        elif self.img_count <= 4:
+        elif self.img_count <= 4 and self.y == 300:
             self.dino_img =self.img[1]
             self.img_count = 0
+
+
         screen.blit(self.dino_img,(self.x,self.y))
 
 
 def main(screen):
+
     obj = dino(100,300)
     running = True
     clk = 0
@@ -61,6 +70,9 @@ def main(screen):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     obj.jump()
+                if event.key ==pygame.K_ESCAPE:
+                    running = False
+                    sys.exit()
 
         obj.draw(screen)
         obj.move()
@@ -68,19 +80,3 @@ def main(screen):
 
 
 main(screen)
-
-
-
-
-
-
-
-
-
-#
-# def dino(x,y,i):
-#     print(i)
-#
-#     screen.blit(dinoRun[i],(100,300))
-
-
