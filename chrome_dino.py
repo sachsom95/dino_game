@@ -1,13 +1,15 @@
 import pygame
 import sys
+import random
 WIN_WIDTH = 1200
 WIN_HEIGHT = 500
 pygame.init()
 pygame.display.set_caption("Dino")
-screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT),pygame.FULLSCREEN)
-# screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
+# screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT),pygame.FULLSCREEN)
+screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
 dinoRun = [(pygame.image.load("assets/dinorun0000.png")) , (pygame.image.load("assets/dinorun0001.png")),(pygame.image.load("assets/dinoJump0000.png")) ]
 ground_img = pygame.image.load("assets/Ground.png")
+cactus_img = [pygame.image.load("assets/cactusBig0000.png"),pygame.image.load("assets/cactusSmall0000.png"),pygame.image.load("assets/cactusSmallMany0000.png")]
 
 class dino:
     '''The class for t-rex'''
@@ -27,12 +29,12 @@ class dino:
         if displacement > 300:
             displacement = 300
         self.y = displacement
-        print(self.y)
+        # print(self.y)
     def jump(self):
         self.vel = -10.5
         self.clk = 0
         self.height = self.y
-        print("space pressed")
+        # print("space pressed")
 
     def draw (self , screen):
         clock = pygame.time.Clock()
@@ -63,6 +65,35 @@ class ground:
             self.x = 0
         x_coordinate = self.x - offset
         screen.blit(self.img,(-x_coordinate,self.y))
+        # obstacle_activate = random.randint(0,10)
+        # if obstacle_activate == 5:
+        #     screen.blit(self.obstacle[random.randint(0,2)], (-x_coordinate, self.y))
+
+class cactus:
+    def __init__(self,x,y):
+        self.y = y
+        self.x = 0
+        self.obstacle = cactus_img
+        self.obstacle_list=[0,0,0,0,0]
+        self.counter = 0
+
+    def draw_cactus(self,obstacle_obj,screen):
+        screen.blit(obstacle_obj[0],(obstacle_obj[1]+self.x,300))
+        print(obstacle_obj[1]+self.x)
+        if obstacle_obj[1]-self.x < 0:
+            self.counter -= 1
+
+
+    def move(self):
+        self.x -= 3
+
+    def make_obstacle(self):
+        for x in range (5):
+            self.obstacle_list[x]=[self.obstacle[random.randint(0,2)],random.randint(1300,1800)]
+            self.counter += 1
+
+
+
 
 
 
@@ -70,7 +101,7 @@ class ground:
 
 
 def main(screen):
-
+    obj_cactus = cactus(100,350)
     obj = dino(100,300)
     obj_ground = ground(400)
     running = True
@@ -90,12 +121,19 @@ def main(screen):
                 if event.key ==pygame.K_ESCAPE:
                     running = False
                     sys.exit()
+        if obj_cactus.counter == 0:
+            obj_cactus.make_obstacle()
+        for z in range(5):
+            obj_cactus.draw_cactus(obj_cactus.obstacle_list[z],screen)
+            obj_cactus.move()
 
         obj.draw(screen)
         obj_ground.draw(0,screen)
         obj_ground.draw(533,screen)
         obj_ground.draw(1066,screen)
         obj_ground.draw(1066+533, screen)
+
+        # obj_cactus.draw_cactus(random.randint(0,100),random.randint(0,2),screen)
         obj.move()
         pygame.display.update()
 
