@@ -5,8 +5,8 @@ WIN_WIDTH = 1200
 WIN_HEIGHT = 500
 pygame.init()
 pygame.display.set_caption("Dino")
-screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT),pygame.FULLSCREEN)
-# screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
+# screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT),pygame.FULLSCREEN)
+screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
 dinoRun = [(pygame.image.load("assets/dinorun0000.png")) , (pygame.image.load("assets/dinorun0001.png")),(pygame.image.load("assets/dinoJump0000.png")) ]
 ground_img = pygame.image.load("assets/Ground.png")
 cactus_img = [pygame.image.load("assets/cactusBig0000.png"),pygame.image.load("assets/cactusSmall0000.png"),pygame.image.load("assets/cactusSmallMany0000.png")]
@@ -35,6 +35,8 @@ class dino:
         self.clk = 0
         self.height = self.y
         # print("space pressed")
+    def dino_rect(self,surface):
+        pygame.draw.rect(surface,(0,0,128),(self.x,self.y,92,99),1)
 
     def draw (self , screen):
         clock = pygame.time.Clock()
@@ -100,6 +102,10 @@ class cactus:
         if flag == 4:
             self.obstacle_list.append([self.obstacle[0],1200])
 
+    def catus_hitbox(self,z,screen):
+        pygame.draw.rect(screen,(0,0,128),(self.obstacle_list[z][1],300,60,120),1)
+        return (self.obstacle_list[z][1],300,60,120)
+
 
 
 
@@ -143,12 +149,14 @@ def main(screen):
         for z in range(length):
 
             obj_cactus.draw_cactus(z, screen)
+            obj_cactus.catus_hitbox(z,screen)
             obj_cactus.move(z)
 
 
 
         # print("counter",obj_cactus.counter)
         obj.draw(screen)
+        obj.dino_rect(screen)
         obj_ground.draw(0,screen)
         obj_ground.draw(533,screen)
         obj_ground.draw(1066,screen)
