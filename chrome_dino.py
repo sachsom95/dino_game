@@ -35,7 +35,7 @@ class dino:
         self.clk = 0
         self.height = self.y
         # print("space pressed")
-    def dino_rect(self,surface):
+    def dino_hitbox(self,surface):
         pygame.draw.rect(surface,(0,0,128),(self.x,self.y,92,99),1)
 
     def draw (self , screen):
@@ -156,7 +156,7 @@ def main(screen):
 
         # print("counter",obj_cactus.counter)
         obj.draw(screen)
-        obj.dino_rect(screen)
+        obj.dino_hitbox(screen)
         obj_ground.draw(0,screen)
         obj_ground.draw(533,screen)
         obj_ground.draw(1066,screen)
