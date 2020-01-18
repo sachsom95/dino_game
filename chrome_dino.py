@@ -25,7 +25,7 @@ class dino:
 
     def move(self):
         self.clk += 1
-        displacement =10 -self.vel * (self.clk*2) + ((.5) * (self.clk)**2)
+        displacement =-self.vel * (self.clk*2) + ((.5) * (self.clk)**2)+300
         # if displacement < 0:
         #     displacement = 0
 
@@ -35,7 +35,7 @@ class dino:
         print(self.y)
         # print(self.clk)
     def jump(self):
-        self.vel = 3
+        self.vel = 10
         self.clk = 0
         self.height = self.y
         # print("space pressed")
