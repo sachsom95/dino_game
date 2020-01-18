@@ -3,11 +3,10 @@ import sys
 import random
 WIN_WIDTH = 1200
 WIN_HEIGHT = 500
-running = True
 pygame.init()
 pygame.display.set_caption("Dino")
-# screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT),pygame.FULLSCREEN)
-screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
+screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT),pygame.FULLSCREEN)
+# screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
 dinoRun = [(pygame.image.load("assets/dinorun0000.png")) , (pygame.image.load("assets/dinorun0001.png")),(pygame.image.load("assets/dinoJump0000.png")) ]
 ground_img = pygame.image.load("assets/Ground.png")
 cactus_img = [pygame.image.load("assets/cactusBig0000.png"),pygame.image.load("assets/cactusSmall0000.png"),pygame.image.load("assets/cactusSmallMany0000.png")]
@@ -26,13 +25,17 @@ class dino:
 
     def move(self):
         self.clk += 1
-        displacement = -self.vel * self.clk + ((1.5) * self.clk**2)
+        displacement =10 -self.vel * (self.clk*2) + ((.5) * (self.clk)**2)
+        # if displacement < 0:
+        #     displacement = 0
+
         if displacement > 300:
             displacement = 300
         self.y = displacement
-        # print(self.y)
+        print(self.y)
+        # print(self.clk)
     def jump(self):
-        self.vel = -10.5
+        self.vel = 3
         self.clk = 0
         self.height = self.y
         # print("space pressed")
@@ -113,24 +116,24 @@ class cactus:
 
 
 def collision(dino,cactus):
-    global running
     Xd1,Yd1,Xd2,Yd2 = dino
     Xc1, Yc1, Xc2, Yc2 = cactus
-    print("Yd1:",Yd1,"Yd2:",Yd2)
+    # print("Yd1:",Yd1,"Yd2:",Yd2)
 
     if Xc1 > Xd2 or Xc2 < Xd1 or Yc1 > Yd2 or Yc2 < Yc1:
         return False
     else:
-        running = False
+        print("Collision")
+        return True
+
 
 
 
 def main(screen):
-    global running
     obj_cactus = cactus(100,350)
     obj = dino(100,300)
     obj_ground = ground(400)
-
+    running = True
     clk = 0
     while running:
         clk += 1
