@@ -10,6 +10,9 @@ screen = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT),pygame.FULLSCREEN)
 dinoRun = [(pygame.image.load("assets/dinorun0000.png")) , (pygame.image.load("assets/dinorun0001.png")),(pygame.image.load("assets/dinoJump0000.png")) ]
 ground_img = pygame.image.load("assets/Ground.png")
 cactus_img = [pygame.image.load("assets/cactusBig0000.png"),pygame.image.load("assets/cactusSmall0000.png"),pygame.image.load("assets/cactusSmallMany0000.png")]
+# font_used = pygame.font.match_font('arial')
+# font_used = pygame.font.SysFont(pygame.font.match_font('arial'),100)
+font_used = pygame.font.match_font('arial');
 
 class dino:
     '''The class for t-rex'''
@@ -126,7 +129,10 @@ def collision(dino,cactus):
         print("Collision")
         return True
 
-
+def score(scr, surface):
+    font = pygame.font.Font(font_used, 30)
+    font_surface = font.render("Score :"+str(scr),True,(128,128,128))
+    surface.blit(font_surface,(80,20))
 
 
 def main(screen):
@@ -181,6 +187,8 @@ def main(screen):
 
         # obj_cactus.draw_cactus(random.randint(0,100),random.randint(0,2),screen)
         obj.move()
+        score(clk,screen)
+
         pygame.display.update()
 
 
